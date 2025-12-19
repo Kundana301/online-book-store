@@ -5,44 +5,30 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
-    <h1>Welcome to Online Book Store</h1>
+    <h1>Online Book Store</h1>
     <nav>
-        <a href="catalog.html">Catalog</a>
+        <a href="index.html">Home</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
         <a href="cart.html">Cart</a>
-        <a href="login.html" id="loginLink">Login/Register</a>
-        <span id="userWelcome"></span>
     </nav>
 </header>
 
-<main>
-    <h2>Featured Books</h2>
-    <div id="featuredBooks"></div>
-</main>
+<div class="container">
+    <div class="card">
+        <h2>Welcome to Online Book Store</h2>
+        <p>✔ Easy book search</p>
+        <p>✔ Secure login & registration</p>
+        <p>✔ Simple cart management</p>
+    </div>
+</div>
 
-<script src="script.js"></script>
-<script>
-    let user = getUser();
-    if(user){
-        document.getElementById('userWelcome').innerText = `Hello, ${user}`;
-        document.getElementById('loginLink').style.display = 'none';
-    }
+<footer>
+    <p>© 2025 Online Book Store</p>
+</footer>
 
-    const featuredBooks = [
-        {id:1, name:"The Alchemist", price:250},
-        {id:2, name:"1984", price:200},
-        {id:3, name:"Harry Potter", price:350}
-    ];
-
-    let div = document.getElementById('featuredBooks');
-    featuredBooks.forEach(book=>{
-        div.innerHTML += `
-        <div class="card">
-            <h3>${book.name}</h3>
-            <p>Price: ₹${book.price}</p>
-            <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
-        </div>`;
-    });
-</script>
 </body>
 </html>
