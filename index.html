@@ -8,38 +8,36 @@
 
 <div class="header">
     <h2>BookStore</h2>
-    <div class="search-box">
-        <input type="text" placeholder="Search books">
-        <button>Search</button>
-    </div>
+    <input placeholder="Search books">
 </div>
 
 <div class="navbar">
     <a href="index.html">Home</a>
     <a href="catalogue.html">Catalogue</a>
     <a href="cart.html">Cart</a>
+    <a href="login.html">Login</a>
 </div>
 
 <div class="container">
     <h2>Featured Books</h2>
     <div class="products">
+
         <div class="card">
-            <img src="https://via.placeholder.com/200">
+            <img src="https://covers.openlibrary.org/b/id/10521258-L.jpg">
             <h3>Java Programming</h3>
             <p>₹500</p>
-            <button onclick="addToCart('Java Programming', 500)">Add to Cart</button>
+            <button onclick="addToCart('Java Programming',500)">Add to Cart</button>
         </div>
 
         <div class="card">
-            <img src="https://via.placeholder.com/200">
+            <img src="https://covers.openlibrary.org/b/id/10909258-L.jpg">
             <h3>Python Basics</h3>
             <p>₹450</p>
-            <button onclick="addToCart('Python Basics', 450)">Add to Cart</button>
+            <button onclick="addToCart('Python Basics',450)">Add to Cart</button>
         </div>
+
     </div>
 </div>
-
-<div class="footer">© 2025 Online Book Store</div>
 
 <script src="script.js"></script>
 </body>
