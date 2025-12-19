@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadSummary()">
+
+<h2>Order Summary</h2>
+<div id="summary"></div>
+
+<script>
+function loadSummary() {
+    let user = localStorage.getItem("loggedUser");
+    let orders = JSON.parse(localStorage.getItem("orders_" + user));
+    let last = orders[orders.length - 1];
+
+    let html = "";
+    last.items.forEach(i => {
+        html += `<p>${i.name} × ${i.qty} = ₹${i.price * i.qty}</p>`;
+    });
+
+    document.getElementById("summary").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
