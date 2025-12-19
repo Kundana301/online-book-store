@@ -10,24 +10,39 @@
     <nav>
         <a href="catalog.html">Catalog</a>
         <a href="cart.html">Cart</a>
-        <a href="login.html" id="loginLink">Login</a>
+        <a href="login.html" id="loginLink">Login/Register</a>
         <span id="userWelcome"></span>
     </nav>
 </header>
 
 <main>
     <h2>Featured Books</h2>
-    <p>Browse the catalog to see all available books!</p>
+    <div id="featuredBooks"></div>
 </main>
 
 <script src="script.js"></script>
 <script>
-    // Show logged-in user name
     let user = getUser();
-    if(user) {
-        document.getElementById('userWelcome').innerHTML = `Hello, ${user}`;
+    if(user){
+        document.getElementById('userWelcome').innerText = `Hello, ${user}`;
         document.getElementById('loginLink').style.display = 'none';
     }
+
+    const featuredBooks = [
+        {id:1, name:"The Alchemist", price:250},
+        {id:2, name:"1984", price:200},
+        {id:3, name:"Harry Potter", price:350}
+    ];
+
+    let div = document.getElementById('featuredBooks');
+    featuredBooks.forEach(book=>{
+        div.innerHTML += `
+        <div class="card">
+            <h3>${book.name}</h3>
+            <p>Price: ₹${book.price}</p>
+            <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
+        </div>`;
+    });
 </script>
 </body>
 </html>
