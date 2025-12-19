@@ -1,9 +1,43 @@
-/* ---------------- LOGIN ---------------- */
+/* ======================= LOGIN ======================= */
 function getUser() {
     return localStorage.getItem("loggedUser");
 }
 
-/* ---------------- CART HELPERS ---------------- */
+/* ======================= ADD TO CART (FIXED) ======================= */
+function addToCart(name, price) {
+    let user = getUser();
+
+    if (!user) {
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+    }
+
+    let key = "cart_" + user;
+    let cart = JSON.parse(localStorage.getItem(key)) || [];
+
+    let found = false;
+    for (let i = 0; i < cart.length; i++) {
+        if (cart[i].name === name) {
+            cart[i].qty += 1;
+            found = true;
+            break;
+        }
+    }
+
+    if (!found) {
+        cart.push({
+            name: name,
+            price: price,
+            qty: 1
+        });
+    }
+
+    localStorage.setItem(key, JSON.stringify(cart));
+    alert("Book added to cart successfully!");
+}
+
+/* ======================= CART HELPERS ======================= */
 function getCart() {
     let user = getUser();
     if (!user) return [];
@@ -15,19 +49,22 @@ function saveCart(cart) {
     localStorage.setItem("cart_" + user, JSON.stringify(cart));
 }
 
-/* ---------------- LOAD CART ---------------- */
+/* ======================= LOAD CART ======================= */
 function loadCart() {
     let user = getUser();
     let cartBody = document.getElementById("cart");
     let totalDiv = document.getElementById("totalAmount");
     let checkoutBtn = document.getElementById("checkoutBtn");
 
+    if (!cartBody) return;
+
     cartBody.innerHTML = "";
 
     if (!user) {
-        cartBody.innerHTML = `<tr><td colspan="4">Please login to view cart.</td></tr>`;
-        checkoutBtn.disabled = true;
-        totalDiv.innerHTML = "";
+        cartBody.innerHTML =
+            `<tr><td colspan="4">Please login to view cart.</td></tr>`;
+        if (checkoutBtn) checkoutBtn.disabled = true;
+        if (totalDiv) totalDiv.innerHTML = "";
         return;
     }
 
@@ -35,13 +72,14 @@ function loadCart() {
     let total = 0;
 
     if (cart.length === 0) {
-        cartBody.innerHTML = `<tr><td colspan="4">Your cart is empty.</td></tr>`;
-        checkoutBtn.disabled = true;
-        totalDiv.innerHTML = "";
+        cartBody.innerHTML =
+            `<tr><td colspan="4">Your cart is empty.</td></tr>`;
+        if (checkoutBtn) checkoutBtn.disabled = true;
+        if (totalDiv) totalDiv.innerHTML = "";
         return;
     }
 
-    checkoutBtn.disabled = false;
+    if (checkoutBtn) checkoutBtn.disabled = false;
 
     cart.forEach((item, index) => {
         let qty = item.qty || 1;
@@ -64,10 +102,11 @@ function loadCart() {
         `;
     });
 
-    totalDiv.innerHTML = `<b>Total Amount: ₹${total}</b>`;
+    if (totalDiv)
+        totalDiv.innerHTML = `<b>Total Amount: ₹${total}</b>`;
 }
 
-/* ---------------- QUANTITY CONTROLS ---------------- */
+/* ======================= QUANTITY CONTROLS ======================= */
 function increaseQty(index) {
     let cart = getCart();
     cart[index].qty = (cart[index].qty || 1) + 1;
@@ -84,7 +123,7 @@ function decreaseQty(index) {
     loadCart();
 }
 
-/* ---------------- REMOVE ITEM ---------------- */
+/* ======================= REMOVE ITEM ======================= */
 function removeItem(index) {
     let cart = getCart();
     cart.splice(index, 1);
@@ -92,7 +131,7 @@ function removeItem(index) {
     loadCart();
 }
 
-/* ---------------- CLEAR CART ---------------- */
+/* ======================= CLEAR CART ======================= */
 function confirmClearCart() {
     if (confirm("Are you sure you want to clear the cart?")) {
         clearCart();
@@ -110,7 +149,7 @@ function clearCart() {
     loadCart();
 }
 
-/* ---------------- CHECKOUT ---------------- */
+/* ======================= CHECKOUT ======================= */
 function checkoutCart() {
     let user = getUser();
     if (!user) {
@@ -129,9 +168,7 @@ function checkoutCart() {
     window.location.href = "order-summary.html";
 }
 
-
-
-/* ----------------------- PAYMENT ----------------------- */
+/* ======================= PAYMENT ======================= */
 function makePayment() {
     let user = getUser();
     if (!user) return;
@@ -147,40 +184,11 @@ function makePayment() {
     window.location.href = "order-summary.html";
 }
 
-/* ----------------------- SEARCH ----------------------- */
+/* ======================= SEARCH ======================= */
 function searchBooks() {
     let input = search.value.toLowerCase();
     document.querySelectorAll(".card").forEach(c => {
-        c.style.display = c.innerText.toLowerCase().includes(input)
-            ? "block"
-            : "none";
+        c.style.display =
+            c.innerText.toLowerCase().includes(input) ? "block" : "none";
     });
-}
-/* ---------------- ADD TO CART ---------------- */
-function addToCart(name, price) {
-    let user = getUser();
-
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
-
-    let cart = getCart();
-
-    // Check if book already exists
-    let item = cart.find(b => b.name === name);
-
-    if (item) {
-        item.qty += 1;   // increase quantity
-    } else {
-        cart.push({
-            name: name,
-            price: price,
-            qty: 1
-        });
-    }
-
-    saveCart(cart);
-    alert("Book added to cart successfully!");
 }
