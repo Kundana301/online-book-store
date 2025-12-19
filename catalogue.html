@@ -1,47 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Catalog</title>
+    <title>Catalogue</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
 <header>
-    <h1>Book Catalog</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="cart.html">Cart</a>
-        <a href="login.html" id="loginLink">Login/Register</a>
-        <span id="userWelcome"></span>
-    </nav>
+    <h1>Book Catalogue</h1>
 </header>
 
-<div id="bookList"></div>
+<div class="container">
 
-<script src="script.js"></script>
-<script>
-    let user = getUser();
-    if(user){
-        document.getElementById('userWelcome').innerText = `Hello, ${user}`;
-        document.getElementById('loginLink').style.display = 'none';
-    }
+    <div class="search-box">
+        <input type="text" placeholder="Search books...">
+        <select>
+            <option>All Categories</option>
+            <option>Programming</option>
+            <option>Database</option>
+            <option>Web</option>
+        </select>
+    </div>
 
-    const books = [
-        {id:1, name:"The Alchemist", price:250},
-        {id:2, name:"1984", price:200},
-        {id:3, name:"Harry Potter", price:350},
-        {id:4, name:"The Hobbit", price:300},
-        {id:5, name:"To Kill a Mockingbird", price:220}
-    ];
+    <div class="card">
+        <h3>Web Technologies</h3>
+        <p>Category: Web</p>
+        <p>Price: ₹450</p>
+        <label>Quantity</label>
+        <input type="number" value="1">
+        <button>Add to Cart</button>
+    </div>
 
-    let div = document.getElementById('bookList');
-    books.forEach(book=>{
-        div.innerHTML += `
-        <div class="card">
-            <h3>${book.name}</h3>
-            <p>Price: ₹${book.price}</p>
-            <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
-        </div>`;
-    });
-</script>
+    <div class="card">
+        <h3>Data Structures</h3>
+        <p>Category: Programming</p>
+        <p>Price: ₹550</p>
+        <label>Quantity</label>
+        <input type="number" value="1">
+        <button>Add to Cart</button>
+    </div>
+
+</div>
+
+<footer>
+    <p>Browse & Add Books Easily</p>
+</footer>
+
 </body>
 </html>
