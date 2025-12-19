@@ -1,33 +1,81 @@
-function addToCart(name, price) {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+/* ---------- CART LOGIC ---------- */
+function getCart() {
+    return JSON.parse(localStorage.getItem("cart")) || [];
+}
 
-    cart.push({ name, price });
+function saveCart(cart) {
     localStorage.setItem("cart", JSON.stringify(cart));
+}
 
+function addToCart(name, price) {
+    let cart = getCart();
+    let item = cart.find(p => p.name === name);
+
+    if (item) {
+        item.qty += 1;
+    } else {
+        cart.push({ name, price, qty: 1 });
+    }
+
+    saveCart(cart);
     alert(name + " added to cart");
 }
 
 function loadCart() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    let table = document.getElementById("cart-items");
+    let cart = getCart();
+    let tbody = document.getElementById("cart-items");
     let total = 0;
+    tbody.innerHTML = "";
 
-    table.innerHTML = "";
+    cart.forEach((item, index) => {
+        let subtotal = item.price * item.qty;
+        total += subtotal;
 
-    cart.forEach(item => {
-        total += item.price;
-        table.innerHTML += `
-            <tr>
-                <td>${item.name}</td>
-                <td>₹${item.price}</td>
-            </tr>
-        `;
+        tbody.innerHTML += `
+        <tr>
+            <td>${item.name}</td>
+            <td>₹${item.price}</td>
+            <td>
+                <button onclick="updateQty(${index}, -1)">➖</button>
+                ${item.qty}
+                <button onclick="updateQty(${index}, 1)">➕</button>
+            </td>
+            <td>₹${subtotal}</td>
+            <td><button onclick="removeItem(${index})">❌</button></td>
+        </tr>`;
     });
 
     document.getElementById("total").innerText = total;
 }
 
-function clearCart() {
-    localStorage.removeItem("cart");
+function updateQty(index, change) {
+    let cart = getCart();
+    cart[index].qty += change;
+
+    if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+    }
+
+    saveCart(cart);
     loadCart();
+}
+
+function removeItem(index) {
+    let cart = getCart();
+    cart.splice(index, 1);
+    saveCart(cart);
+    loadCart();
+}
+
+/* ---------- LOGIN VALIDATION ---------- */
+function loginUser() {
+    let u = document.getElementById("username").value;
+    let p = document.getElementById("password").value;
+
+    if (u === "admin" && p === "admin123") {
+        alert("Login successful");
+        window.location.href = "index.html";
+    } else {
+        alert("Invalid username or password");
+    }
 }
