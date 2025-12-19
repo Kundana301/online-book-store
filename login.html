@@ -1,9 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
 <form onsubmit="loginUser(); return false;">
-<h2>Login</h2>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<button>Login</button>
-<p>Use: admin / admin123</p>
+    <h2>Login</h2>
+    <input id="username" placeholder="Username" required>
+    <input id="password" type="password" placeholder="Password" required>
+    <button>Login</button>
+    <p>User: user / 1234</p>
+    <p>Admin: admin / admin123</p>
 </form>
 
 <script src="script.js"></script>
+</body>
+</html>
