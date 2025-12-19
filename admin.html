@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Admin Panel – Orders</h2>
+<div id="admin"></div>
+
+<script>
+let users = ["user"];
+let out = "";
+
+users.forEach(u => {
+    let orders = JSON.parse(localStorage.getItem("orders_" + u)) || [];
+    orders.forEach(o => {
+        out += `<h4>${u} - ${o.date}</h4>`;
+        o.items.forEach(i => {
+            out += `<p>${i.name} × ${i.qty}</p>`;
+        });
+    });
+});
+
+document.getElementById("admin").innerHTML = out;
+</script>
+
+</body>
+</html>
