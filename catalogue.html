@@ -10,7 +10,7 @@
     <nav>
         <a href="index.html">Home</a>
         <a href="cart.html">Cart</a>
-        <a href="login.html" id="loginLink">Login</a>
+        <a href="login.html" id="loginLink">Login/Register</a>
         <span id="userWelcome"></span>
     </nav>
 </header>
@@ -20,25 +20,28 @@
 <script src="script.js"></script>
 <script>
     let user = getUser();
-    if(user) {
-        document.getElementById('userWelcome').innerHTML = `Hello, ${user}`;
+    if(user){
+        document.getElementById('userWelcome').innerText = `Hello, ${user}`;
         document.getElementById('loginLink').style.display = 'none';
     }
 
     const books = [
-        {id:1, name:"Book A", price:200},
-        {id:2, name:"Book B", price:150},
-        {id:3, name:"Book C", price:300}
+        {id:1, name:"The Alchemist", price:250},
+        {id:2, name:"1984", price:200},
+        {id:3, name:"Harry Potter", price:350},
+        {id:4, name:"The Hobbit", price:300},
+        {id:5, name:"To Kill a Mockingbird", price:220}
     ];
 
-    let bookListDiv = document.getElementById('bookList');
+    let div = document.getElementById('bookList');
     books.forEach(book=>{
-        bookListDiv.innerHTML += `
-            <div class="card">
-                <h3>${book.name}</h3>
-                <p>Price: ₹${book.price}</p>
-                <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
-            </div>
-        `;
+        div.innerHTML += `
+        <div class="card">
+            <h3>${book.name}</h3>
+            <p>Price: ₹${book.price}</p>
+            <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
+        </div>`;
     });
 </script>
+</body>
+</html>
