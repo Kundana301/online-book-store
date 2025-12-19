@@ -6,41 +6,29 @@
 </head>
 <body>
 
-<header>
-    <h1>Online Book Store</h1>
-    <input id="search" placeholder="Search books..." onkeyup="searchBooks()">
-</header>
+<h2>Book Store</h2>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="catalogue.html">Catalogue</a>
-    <a href="cart.html">Cart</a>
-    <a href="order-history.html">Orders</a>
-    <a href="login.html">Login</a>
-</nav>
-
-<div class="grid">
-    <div class="card">
-        <img src="https://m.media-amazon.com/images/I/71aFt4+OTOL.jpg">
-        <h3>Python Programming</h3>
-        <p>₹500</p>
-        <button onclick="addToCart('Python Programming',500)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-        <img src="https://m.media-amazon.com/images/I/81bsw6fnUiL.jpg">
-        <h3>Java Complete Guide</h3>
-        <p>₹650</p>
-        <button onclick="addToCart('Java Complete Guide',650)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-        <img src="https://m.media-amazon.com/images/I/71k+8zKj2ML.jpg">
-        <h3>Data Structures</h3>
-        <p>₹550</p>
-        <button onclick="addToCart('Data Structures',550)">Add to Cart</button>
-    </div>
+<!-- BOOK 1 -->
+<div class="card">
+    <h3>Java Programming</h3>
+    <p>Price: ₹300</p>
+    <button onclick="addToCart('Java Programming', 300)">
+        Add to Cart
+    </button>
 </div>
+
+<!-- BOOK 2 -->
+<div class="card">
+    <h3>Python Basics</h3>
+    <p>Price: ₹250</p>
+    <button onclick="addToCart('Python Basics', 250)">
+        Add to Cart
+    </button>
+</div>
+
+<!-- GO TO CART -->
+<br><br>
+<a href="cart.html">Go to Cart</a>
 
 <script src="script.js"></script>
 </body>
