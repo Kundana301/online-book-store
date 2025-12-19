@@ -1,13 +1,30 @@
-<div class="card">
-<img src="https://covers.openlibrary.org/b/id/11153230-L.jpg">
-<h3>Data Structures</h3>
-<p>₹600</p>
-<button onclick="addToCart('Data Structures',600)">Add</button>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Catalogue</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h2>Book Catalogue</h2>
+    <input id="search" placeholder="Search books..." onkeyup="searchBooks()">
+</header>
+
+<div class="grid">
+    <div class="card">
+        <h3>Operating Systems</h3>
+        <p>₹600</p>
+        <button onclick="addToCart('Operating Systems',600)">Add to Cart</button>
+    </div>
+
+    <div class="card">
+        <h3>DBMS</h3>
+        <p>₹580</p>
+        <button onclick="addToCart('DBMS',580)">Add to Cart</button>
+    </div>
 </div>
 
-<div class="card">
-<img src="https://covers.openlibrary.org/b/id/10430290-L.jpg">
-<h3>Web Development</h3>
-<p>₹550</p>
-<button onclick="addToCart('Web Development',550)">Add</button>
-</div>
+<script src="script.js"></script>
+</body>
+</html>
