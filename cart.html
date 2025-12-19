@@ -4,17 +4,22 @@
     <title>My Cart</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body onload="loadCart()">
 
 <header>
     <h2>My Cart</h2>
 </header>
 
+<!-- CART ITEMS -->
 <div id="cart"></div>
 
+<!-- TOTAL AMOUNT -->
+<h3 id="totalAmount"></h3>
+
 <!-- CART ACTIONS -->
-<button onclick="clearCart()">Clear Cart</button>
-<button onclick="checkoutCart()">Checkout</button>
+<button onclick="confirmClearCart()">Clear Cart</button>
+<button id="checkoutBtn" onclick="checkoutCart()">Checkout</button>
 
 <script src="script.js"></script>
 </body>
