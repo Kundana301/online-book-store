@@ -1,92 +1,58 @@
-/* ---------- CART LOGIC ---------- */
-function getCart() {
-    return JSON.parse(localStorage.getItem("cart")) || [];
+/* LOGIN */
+function loginUser() {
+    let u = username.value;
+    let p = password.value;
+
+    if ((u === "user" && p === "1234") || (u === "admin" && p === "admin123")) {
+        localStorage.setItem("loggedUser", u);
+        location.href = u === "admin" ? "admin.html" : "index.html";
+    } else alert("Invalid Login");
 }
 
-function saveCart(cart) {
-    localStorage.setItem("cart", JSON.stringify(cart));
+/* CART */
+function getUser() {
+    return localStorage.getItem("loggedUser");
+}
+
+function getCart() {
+    return JSON.parse(localStorage.getItem("cart_" + getUser())) || [];
+}
+
+function saveCart(c) {
+    localStorage.setItem("cart_" + getUser(), JSON.stringify(c));
 }
 
 function addToCart(name, price) {
     let cart = getCart();
-    let item = cart.find(p => p.name === name);
-
-    if (item) {
-        item.qty += 1;
-    } else {
-        cart.push({ name, price, qty: 1 });
-    }
-
+    let item = cart.find(i => i.name === name);
+    item ? item.qty++ : cart.push({ name, price, qty: 1 });
     saveCart(cart);
-    alert(name + " added to cart");
+    alert("Added to cart");
 }
 
 function loadCart() {
     let cart = getCart();
-    let tbody = document.getElementById("cart-items");
-    let total = 0;
-    tbody.innerHTML = "";
-
-    cart.forEach((item, index) => {
-        let subtotal = item.price * item.qty;
-        total += subtotal;
-
-        tbody.innerHTML += `
-        <tr>
-            <td>${item.name}</td>
-            <td>₹${item.price}</td>
-            <td>
-                <button onclick="updateQty(${index}, -1)">➖</button>
-                ${item.qty}
-                <button onclick="updateQty(${index}, 1)">➕</button>
-            </td>
-            <td>₹${subtotal}</td>
-            <td><button onclick="removeItem(${index})">❌</button></td>
-        </tr>`;
+    let out = "";
+    cart.forEach(i => {
+        out += `<p>${i.name} × ${i.qty} = ₹${i.price * i.qty}</p>`;
     });
-
-    document.getElementById("total").innerText = total;
+    document.getElementById("cart").innerHTML = out;
 }
 
-function updateQty(index, change) {
-    let cart = getCart();
-    cart[index].qty += change;
-
-    if (cart[index].qty <= 0) {
-        cart.splice(index, 1);
-    }
-
-    saveCart(cart);
-    loadCart();
+/* PAYMENT */
+function makePayment() {
+    let user = getUser();
+    let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
+    orders.push({ date: new Date().toLocaleString(), items: getCart() });
+    localStorage.setItem("orders_" + user, JSON.stringify(orders));
+    localStorage.removeItem("cart_" + user);
+    location.href = "order-summary.html";
 }
 
-function removeItem(index) {
-    let cart = getCart();
-    cart.splice(index, 1);
-    saveCart(cart);
-    loadCart();
-}
-
-/* ---------- LOGIN VALIDATION ---------- */
-function loginUser() {
-    let u = document.getElementById("username").value;
-    let p = document.getElementById("password").value;
-
-    if (u === "admin" && p === "admin123") {
-        alert("Login successful");
-        window.location.href = "index.html";
-    } else {
-        alert("Invalid username or password");
-    }
-}
-
-/* ---------- SEARCH FILTER ---------- */
+/* SEARCH */
 function searchBooks() {
-    let input = document.getElementById("search").value.toLowerCase();
-    let cards = document.getElementsByClassName("card");
-
-    for (let i = 0; i < cards.length; i++) {
-        let title = cards[i].getElementsByTagName("h3")[0].innerText.toLowerCase();
-        cards[i].style.display = title.includes(input) ? "block" : "none";
-    }
+    let input = search.value.toLowerCase();
+    document.querySelectorAll(".card").forEach(c => {
+        c.style.display = c.innerText.toLowerCase().includes(input) ? "block" : "none";
+    });
 }
