@@ -1,194 +1,134 @@
-/* ======================= LOGIN ======================= */
+/* ---------------- LOGIN ---------------- */
 function getUser() {
-    return localStorage.getItem("loggedUser");
+    let user = localStorage.getItem("loggedUser");
+    if (!user) {
+        localStorage.setItem("loggedUser", "demoUser"); // auto-login
+        user = "demoUser";
+    }
+    return user;
 }
 
-/* ======================= ADD TO CART (FIXED) ======================= */
+/* ---------------- ADD TO CART ---------------- */
 function addToCart(name, price) {
     let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user)) || [];
 
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
+    let existing = cart.find(item => item.name === name);
+    if (existing) {
+        existing.qty++;
+    } else {
+        cart.push({ name, price, qty: 1 });
     }
 
-    let key = "cart_" + user;
-    let cart = JSON.parse(localStorage.getItem(key)) || [];
-
-    let found = false;
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i].name === name) {
-            cart[i].qty += 1;
-            found = true;
-            break;
-        }
-    }
-
-    if (!found) {
-        cart.push({
-            name: name,
-            price: price,
-            qty: 1
-        });
-    }
-
-    localStorage.setItem(key, JSON.stringify(cart));
-    alert("Book added to cart successfully!");
-}
-
-/* ======================= CART HELPERS ======================= */
-function getCart() {
-    let user = getUser();
-    if (!user) return [];
-    return JSON.parse(localStorage.getItem("cart_" + user)) || [];
-}
-
-function saveCart(cart) {
-    let user = getUser();
     localStorage.setItem("cart_" + user, JSON.stringify(cart));
+    alert("Book added to cart!");
 }
 
-/* ======================= LOAD CART ======================= */
+/* ---------------- LOAD CART ---------------- */
 function loadCart() {
     let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user)) || [];
+
     let cartBody = document.getElementById("cart");
     let totalDiv = document.getElementById("totalAmount");
     let checkoutBtn = document.getElementById("checkoutBtn");
 
-    if (!cartBody) return;
-
     cartBody.innerHTML = "";
-
-    if (!user) {
-        cartBody.innerHTML =
-            `<tr><td colspan="4">Please login to view cart.</td></tr>`;
-        if (checkoutBtn) checkoutBtn.disabled = true;
-        if (totalDiv) totalDiv.innerHTML = "";
-        return;
-    }
-
-    let cart = getCart();
     let total = 0;
 
     if (cart.length === 0) {
-        cartBody.innerHTML =
-            `<tr><td colspan="4">Your cart is empty.</td></tr>`;
-        if (checkoutBtn) checkoutBtn.disabled = true;
-        if (totalDiv) totalDiv.innerHTML = "";
+        cartBody.innerHTML = `<tr><td colspan="4">Cart is empty</td></tr>`;
+        checkoutBtn.disabled = true;
+        totalDiv.innerHTML = "";
         return;
     }
 
-    if (checkoutBtn) checkoutBtn.disabled = false;
+    checkoutBtn.disabled = false;
 
     cart.forEach((item, index) => {
-        let qty = item.qty || 1;
-        let price = item.price * qty;
+        let price = item.price * item.qty;
         total += price;
 
         cartBody.innerHTML += `
             <tr>
                 <td>${item.name}</td>
-                <td align="center">
+                <td>
                     <button onclick="decreaseQty(${index})">−</button>
-                    ${qty}
+                    ${item.qty}
                     <button onclick="increaseQty(${index})">+</button>
                 </td>
-                <td align="center">₹${price}</td>
-                <td align="center">
+                <td>₹${price}</td>
+                <td>
                     <button onclick="removeItem(${index})">Remove</button>
                 </td>
             </tr>
         `;
     });
 
-    if (totalDiv)
-        totalDiv.innerHTML = `<b>Total Amount: ₹${total}</b>`;
+    totalDiv.innerHTML = "Total Amount: ₹" + total;
 }
 
-/* ======================= QUANTITY CONTROLS ======================= */
+/* ---------------- QTY ---------------- */
 function increaseQty(index) {
-    let cart = getCart();
-    cart[index].qty = (cart[index].qty || 1) + 1;
-    saveCart(cart);
+    let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user));
+    cart[index].qty++;
+    localStorage.setItem("cart_" + user, JSON.stringify(cart));
     loadCart();
 }
 
 function decreaseQty(index) {
-    let cart = getCart();
-    if ((cart[index].qty || 1) > 1) {
-        cart[index].qty--;
-    }
-    saveCart(cart);
+    let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user));
+    if (cart[index].qty > 1) cart[index].qty--;
+    localStorage.setItem("cart_" + user, JSON.stringify(cart));
     loadCart();
 }
 
-/* ======================= REMOVE ITEM ======================= */
+/* ---------------- REMOVE ---------------- */
 function removeItem(index) {
-    let cart = getCart();
+    let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user));
     cart.splice(index, 1);
-    saveCart(cart);
+    localStorage.setItem("cart_" + user, JSON.stringify(cart));
     loadCart();
 }
 
-/* ======================= CLEAR CART ======================= */
+/* ---------------- CLEAR CART ---------------- */
 function confirmClearCart() {
-    if (confirm("Are you sure you want to clear the cart?")) {
-        clearCart();
+    if (confirm("Clear cart?")) {
+        let user = getUser();
+        localStorage.removeItem("cart_" + user);
+        loadCart();
     }
 }
 
-function clearCart() {
-    let user = getUser();
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
-    localStorage.removeItem("cart_" + user);
-    loadCart();
-}
-
-/* ======================= CHECKOUT ======================= */
+/* ---------------- CHECKOUT ---------------- */
 function checkoutCart() {
-    let user = getUser();
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
-
-    let cart = getCart();
-    if (cart.length === 0) {
-        alert("Your cart is empty!");
-        return;
-    }
-
-    localStorage.setItem("currentOrder_" + user, JSON.stringify(cart));
     window.location.href = "order-summary.html";
 }
 
-/* ======================= PAYMENT ======================= */
+/* ---------------- ORDER SUMMARY ---------------- */
+function loadSummary() {
+    let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("cart_" + user)) || [];
+    let div = document.getElementById("summary");
+
+    let total = 0;
+    div.innerHTML = "";
+
+    cart.forEach(item => {
+        let price = item.price * item.qty;
+        total += price;
+        div.innerHTML += `<p>${item.name} x ${item.qty} = ₹${price}</p>`;
+    });
+
+    div.innerHTML += `<h3>Total: ₹${total}</h3>`;
+}
+
+/* ---------------- PAYMENT ---------------- */
 function makePayment() {
     let user = getUser();
-    if (!user) return;
-
-    let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
-    orders.push({
-        date: new Date().toLocaleString(),
-        items: getCart()
-    });
-
-    localStorage.setItem("orders_" + user, JSON.stringify(orders));
     localStorage.removeItem("cart_" + user);
-    window.location.href = "order-summary.html";
-}
-
-/* ======================= SEARCH ======================= */
-function searchBooks() {
-    let input = search.value.toLowerCase();
-    document.querySelectorAll(".card").forEach(c => {
-        c.style.display =
-            c.innerText.toLowerCase().includes(input) ? "block" : "none";
-    });
+    window.location.href = "payment-success.html";
 }
