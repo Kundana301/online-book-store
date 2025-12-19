@@ -1,33 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Cart</title>
+    <title>Cart</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="loadCart()">
+<body>
 
 <header>
-    <h2>My Cart</h2>
+    <h1>Shopping Cart</h1>
 </header>
 
-<table width="100%" cellspacing="10">
-    <thead>
-        <tr>
-            <th align="left">Book</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody id="cart">
-    </tbody>
-</table>
+<div class="container">
+    <div class="card">
+        <table>
+            <tr>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Remove</th>
+            </tr>
+            <tr>
+                <td>Web Technologies</td>
+                <td>₹450</td>
+                <td><button>Remove</button></td>
+            </tr>
+            <tr>
+                <td>Data Structures</td>
+                <td>₹550</td>
+                <td><button>Remove</button></td>
+            </tr>
+        </table>
 
-<h3 id="totalAmount"></h3>
+        <h3>Total: ₹1000</h3>
+        <button>Proceed to Checkout</button>
+    </div>
+</div>
 
-<button onclick="confirmClearCart()">Clear Cart</button>
-<button id="checkoutBtn" onclick="checkoutCart()">Checkout</button>
+<footer>
+    <p>Thank you for shopping!</p>
+</footer>
 
-<script src="script.js"></script>
 </body>
 </html>
