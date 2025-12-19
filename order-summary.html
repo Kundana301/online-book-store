@@ -4,23 +4,58 @@
     <title>Order Summary</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body onload="loadSummary()">
+
+<body onload="loadOrderSummary()">
 
 <h2>Order Summary</h2>
-<div id="summary"></div>
+
+<table width="100%" cellspacing="10">
+    <thead>
+        <tr>
+            <th>Book</th>
+            <th>Qty</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody id="orderItems"></tbody>
+</table>
+
+<h3 id="orderTotal"></h3>
+
+<button onclick="makePayment()">Proceed to Payment</button>
 
 <script>
-function loadSummary() {
-    let user = localStorage.getItem("loggedUser");
-    let orders = JSON.parse(localStorage.getItem("orders_" + user));
-    let last = orders[orders.length - 1];
+function getUser() {
+    return localStorage.getItem("loggedUser");
+}
 
-    let html = "";
-    last.items.forEach(i => {
-        html += `<p>${i.name} × ${i.qty} = ₹${i.price * i.qty}</p>`;
+function loadOrderSummary() {
+    let user = getUser();
+    let items = JSON.parse(localStorage.getItem("currentOrder_" + user)) || [];
+    let body = document.getElementById("orderItems");
+    let total = 0;
+
+    body.innerHTML = "";
+
+    items.forEach(item => {
+        let price = item.price * item.qty;
+        total += price;
+
+        body.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td align="center">${item.qty}</td>
+                <td align="center">₹${price}</td>
+            </tr>
+        `;
     });
 
-    document.getElementById("summary").innerHTML = html;
+    document.getElementById("orderTotal").innerHTML =
+        "<b>Total Amount: ₹" + total + "</b>";
+}
+
+function makePayment() {
+    window.location.href = "payment-success.html";
 }
 </script>
 
