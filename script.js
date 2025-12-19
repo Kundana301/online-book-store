@@ -1,46 +1,76 @@
-/* ----------------------- LOGIN FUNCTIONS ----------------------- */
+/* ----------------------- LOGIN ----------------------- */
 function getUser() {
     return localStorage.getItem("loggedUser");
 }
 
-// Load cart when page opens
+function getCart() {
+    let user = getUser();
+    if (!user) return [];
+    return JSON.parse(localStorage.getItem("cart_" + user)) || [];
+}
+
+function saveCart(cart) {
+    let user = getUser();
+    localStorage.setItem("cart_" + user, JSON.stringify(cart));
+}
+
+/* ----------------------- LOAD CART ----------------------- */
 function loadCart() {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let user = getUser();
     let cartDiv = document.getElementById("cart");
+    let totalDiv = document.getElementById("totalAmount");
+    let checkoutBtn = document.getElementById("checkoutBtn");
 
     cartDiv.innerHTML = "";
 
-    if (cart.length === 0) {
-        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+    if (!user) {
+        cartDiv.innerHTML = "<p>Please login to view cart.</p>";
+        checkoutBtn.disabled = true;
+        totalDiv.innerHTML = "";
         return;
     }
 
+    let cart = getCart();
+    let total = 0;
+
+    if (cart.length === 0) {
+        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+        checkoutBtn.disabled = true;
+        totalDiv.innerHTML = "";
+        return;
+    }
+
+    checkoutBtn.disabled = false;
+
     cart.forEach((item, index) => {
+        total += item.price;
         cartDiv.innerHTML += `
             <div class="cart-item">
                 <p><b>${item.name}</b></p>
                 <p>Price: ₹${item.price}</p>
+                <button onclick="removeItem(${index})">Remove</button>
             </div>
         `;
     });
+
+    totalDiv.innerHTML = "<b>Total Amount: ₹" + total + "</b>";
 }
 
-// Clear cart
-function clearCart() {
-    localStorage.removeItem("cart");   // IMPORTANT
-    document.getElementById("cart").innerHTML =
-        "<p>Your cart is empty.</p>";
-    alert("Cart cleared successfully!");
+/* ----------------------- REMOVE SINGLE ITEM ----------------------- */
+function removeItem(index) {
+    let cart = getCart();
+    cart.splice(index, 1);
+    saveCart(cart);
+    loadCart();
 }
 
-// Checkout (optional)
-function checkoutCart() {
-    alert("Checkout successful!");
-    clearCart();
+/* ----------------------- CLEAR CART WITH CONFIRM ----------------------- */
+function confirmClearCart() {
+    if (confirm("Are you sure you want to clear the cart?")) {
+        clearCart();
+    }
 }
 
-
-/* ----------------------- CLEAR CART ----------------------- */
 function clearCart() {
     let user = getUser();
     if (!user) {
@@ -50,8 +80,8 @@ function clearCart() {
     }
 
     localStorage.removeItem("cart_" + user);
-    loadCart(); // refresh view
-    alert("Cart cleared successfully");
+    loadCart();
+    alert("Cart cleared successfully!");
 }
 
 /* ----------------------- CHECKOUT ----------------------- */
@@ -69,33 +99,41 @@ function checkoutCart() {
         return;
     }
 
-    // Save order for user
     let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
-    orders.push({ date: new Date().toLocaleString(), items: cart });
-    localStorage.setItem("orders_" + user, JSON.stringify(orders));
+    orders.push({
+        date: new Date().toLocaleString(),
+        items: cart
+    });
 
-    // Clear cart after checkout
+    localStorage.setItem("orders_" + user, JSON.stringify(orders));
     localStorage.removeItem("cart_" + user);
-    loadCart();
 
     alert("Order placed successfully!");
     window.location.href = "order-summary.html";
 }
 
-/* PAYMENT */
+/* ----------------------- PAYMENT ----------------------- */
 function makePayment() {
     let user = getUser();
+    if (!user) return;
+
     let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
-    orders.push({ date: new Date().toLocaleString(), items: getCart() });
+    orders.push({
+        date: new Date().toLocaleString(),
+        items: getCart()
+    });
+
     localStorage.setItem("orders_" + user, JSON.stringify(orders));
     localStorage.removeItem("cart_" + user);
-    location.href = "order-summary.html";
+    window.location.href = "order-summary.html";
 }
 
-/* SEARCH */
+/* ----------------------- SEARCH ----------------------- */
 function searchBooks() {
     let input = search.value.toLowerCase();
     document.querySelectorAll(".card").forEach(c => {
-        c.style.display = c.innerText.toLowerCase().includes(input) ? "block" : "none";
+        c.style.display = c.innerText.toLowerCase().includes(input)
+            ? "block"
+            : "none";
     });
 }
