@@ -1,8 +1,9 @@
-/* ----------------------- LOGIN ----------------------- */
+/* ---------------- LOGIN ---------------- */
 function getUser() {
     return localStorage.getItem("loggedUser");
 }
 
+/* ---------------- CART HELPERS ---------------- */
 function getCart() {
     let user = getUser();
     if (!user) return [];
@@ -14,17 +15,18 @@ function saveCart(cart) {
     localStorage.setItem("cart_" + user, JSON.stringify(cart));
 }
 
-/* ----------------------- LOAD CART ----------------------- */
+/* ---------------- LOAD CART ---------------- */
 function loadCart() {
     let user = getUser();
-    let cartDiv = document.getElementById("cart");
+    let cartBody = document.getElementById("cart");
     let totalDiv = document.getElementById("totalAmount");
     let checkoutBtn = document.getElementById("checkoutBtn");
 
-    cartDiv.innerHTML = "";
+    cartBody.innerHTML = "";
 
     if (!user) {
-        cartDiv.innerHTML = "<p>Please login to view cart.</p>";
+        cartBody.innerHTML =
+            `<tr><td colspan="4">Please login to view cart.</td></tr>`;
         checkoutBtn.disabled = true;
         totalDiv.innerHTML = "";
         return;
@@ -34,7 +36,8 @@ function loadCart() {
     let total = 0;
 
     if (cart.length === 0) {
-        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
+        cartBody.innerHTML =
+            `<tr><td colspan="4">Your cart is empty.</td></tr>`;
         checkoutBtn.disabled = true;
         totalDiv.innerHTML = "";
         return;
@@ -43,20 +46,26 @@ function loadCart() {
     checkoutBtn.disabled = false;
 
     cart.forEach((item, index) => {
-        total += item.price;
-        cartDiv.innerHTML += `
-            <div class="cart-item">
-                <p><b>${item.name}</b></p>
-                <p>Price: ₹${item.price}</p>
-                <button onclick="removeItem(${index})">Remove</button>
-            </div>
+        let qty = item.qty || 1;
+        let price = item.price * qty;
+        total += price;
+
+        cartBody.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td align="center">${qty}</td>
+                <td align="center">₹${price}</td>
+                <td align="center">
+                    <button onclick="removeItem(${index})">Remove</button>
+                </td>
+            </tr>
         `;
     });
 
-    totalDiv.innerHTML = "<b>Total Amount: ₹" + total + "</b>";
+    totalDiv.innerHTML = `<b>Total Amount: ₹${total}</b>`;
 }
 
-/* ----------------------- REMOVE SINGLE ITEM ----------------------- */
+/* ---------------- REMOVE SINGLE ITEM ---------------- */
 function removeItem(index) {
     let cart = getCart();
     cart.splice(index, 1);
@@ -64,7 +73,7 @@ function removeItem(index) {
     loadCart();
 }
 
-/* ----------------------- CLEAR CART WITH CONFIRM ----------------------- */
+/* ---------------- CLEAR CART ---------------- */
 function confirmClearCart() {
     if (confirm("Are you sure you want to clear the cart?")) {
         clearCart();
@@ -84,7 +93,7 @@ function clearCart() {
     alert("Cart cleared successfully!");
 }
 
-/* ----------------------- CHECKOUT ----------------------- */
+/* ---------------- CHECKOUT ---------------- */
 function checkoutCart() {
     let user = getUser();
     if (!user) {
@@ -111,6 +120,7 @@ function checkoutCart() {
     alert("Order placed successfully!");
     window.location.href = "order-summary.html";
 }
+
 
 /* ----------------------- PAYMENT ----------------------- */
 function makePayment() {
