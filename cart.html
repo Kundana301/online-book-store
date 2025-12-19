@@ -1,31 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cart</title>
-    <link rel="stylesheet" href="style.css">
-</head>
 <body onload="loadCart()">
 
 <div class="navbar">
     <a href="index.html">Home</a>
-    <a href="catalogue.html">Catalogue</a>
+    <a href="checkout.html">Checkout</a>
 </div>
 
 <div class="container">
-    <h2>Your Cart</h2>
+<h2>Your Cart</h2>
 
-    <table>
-        <tr>
-            <th>Book</th>
-            <th>Price</th>
-        </tr>
-        <tbody id="cart-items"></tbody>
-    </table>
+<table>
+<tr>
+<th>Book</th><th>Price</th><th>Qty</th><th>Total</th><th>Remove</th>
+</tr>
+<tbody id="cart-items"></tbody>
+</table>
 
-    <h3>Total: ₹<span id="total">0</span></h3>
-    <button onclick="clearCart()">Clear Cart</button>
+<h3>Grand Total: ₹<span id="total">0</span></h3>
 </div>
 
 <script src="script.js"></script>
 </body>
-</html>
