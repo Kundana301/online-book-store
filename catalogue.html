@@ -1,30 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Catalogue</title>
+    <title>Catalog</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <header>
-    <h2>Book Catalogue</h2>
-    <input id="search" placeholder="Search books..." onkeyup="searchBooks()">
+    <h1>Book Catalog</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="cart.html">Cart</a>
+        <a href="login.html" id="loginLink">Login</a>
+        <span id="userWelcome"></span>
+    </nav>
 </header>
 
-<div class="grid">
-    <div class="card">
-        <h3>Operating Systems</h3>
-        <p>₹600</p>
-        <button onclick="addToCart('Operating Systems',600)">Add to Cart</button>
-    </div>
-
-    <div class="card">
-        <h3>DBMS</h3>
-        <p>₹580</p>
-        <button onclick="addToCart('DBMS',580)">Add to Cart</button>
-    </div>
-</div>
+<div id="bookList"></div>
 
 <script src="script.js"></script>
-</body>
-</html>
+<script>
+    let user = getUser();
+    if(user) {
+        document.getElementById('userWelcome').innerHTML = `Hello, ${user}`;
+        document.getElementById('loginLink').style.display = 'none';
+    }
+
+    const books = [
+        {id:1, name:"Book A", price:200},
+        {id:2, name:"Book B", price:150},
+        {id:3, name:"Book C", price:300}
+    ];
+
+    let bookListDiv = document.getElementById('bookList');
+    books.forEach(book=>{
+        bookListDiv.innerHTML += `
+            <div class="card">
+                <h3>${book.name}</h3>
+                <p>Price: ₹${book.price}</p>
+                <button onclick='addToCart(${JSON.stringify(book)})'>Add to Cart</button>
+            </div>
+        `;
+    });
+</script>
