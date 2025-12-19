@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Payment</title>
+    <title>Payment Success</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
-<form onsubmit="makePayment(); return false;">
-    <h2>Payment</h2>
-    <input placeholder="Card Number" required>
-    <input placeholder="Expiry Date" required>
-    <input placeholder="CVV" required>
-    <button>Pay Now</button>
-</form>
+<body onload="saveOrder()">
 
-<script src="script.js"></script>
+<h2>Payment Successful 🎉</h2>
+<p>Your order has been placed successfully.</p>
+
+<button onclick="goHome()">Go to Home</button>
+
+<script>
+function getUser() {
+    return localStorage.getItem("loggedUser");
+}
+
+function saveOrder() {
+    let user = getUser();
+    let cart = JSON.parse(localStorage.getItem("currentOrder_" + user)) || [];
+
+    let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
+    orders.push({
+        date: new Date().toLocaleString(),
+        items: cart
+    });
+
+    localStorage.setItem("orders_" + user, JSON.stringify(orders));
+
+    localStorage.removeItem("cart_" + user);
+    localStorage.removeItem("currentOrder_" + user);
+}
+
+function goHome() {
+    window.location.href = "index.html";
+}
+</script>
+
 </body>
 </html>
