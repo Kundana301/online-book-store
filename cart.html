@@ -1,22 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cart</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body onload="loadCart()">
 
-<div class="navbar">
-    <a href="index.html">Home</a>
-    <a href="checkout.html">Checkout</a>
-</div>
+<h2>My Cart</h2>
+<div id="cart"></div>
 
-<div class="container">
-<h2>Your Cart</h2>
-
-<table>
-<tr>
-<th>Book</th><th>Price</th><th>Qty</th><th>Total</th><th>Remove</th>
-</tr>
-<tbody id="cart-items"></tbody>
-</table>
-
-<h3>Grand Total: ₹<span id="total">0</span></h3>
-</div>
+<button onclick="location.href='payment.html'">Checkout</button>
 
 <script src="script.js"></script>
 </body>
+</html>
