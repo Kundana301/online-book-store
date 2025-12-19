@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order History</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="loadHistory()">
+
+<h2>My Orders</h2>
+<div id="history"></div>
+
+<script>
+function loadHistory() {
+    let user = localStorage.getItem("loggedUser");
+    let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
+    let out = "";
+
+    orders.forEach(o => {
+        out += `<h4>${o.date}</h4>`;
+        o.items.forEach(i => {
+            out += `<p>${i.name} × ${i.qty}</p>`;
+        });
+    });
+
+    document.getElementById("history").innerHTML = out;
+}
+</script>
+
+</body>
+</html>
