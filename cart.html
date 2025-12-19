@@ -7,27 +7,22 @@
 
 <body onload="loadCart()">
 
-<header>
-    <h2>My Cart</h2>
-</header>
+<h2>My Cart</h2>
 
-<table width="100%" cellspacing="10">
+<table width="100%" border="1" cellpadding="10">
     <thead>
         <tr>
-            <th align="left">Book</th>
+            <th>Book</th>
             <th>Qty</th>
             <th>Price</th>
             <th>Action</th>
         </tr>
     </thead>
-    <tbody id="cart">
-        <!-- Cart items injected by JS -->
-    </tbody>
+    <tbody id="cart"></tbody>
 </table>
 
 <h3 id="totalAmount"></h3>
 
-<!-- CART ACTIONS -->
 <button onclick="confirmClearCart()">Clear Cart</button>
 <button id="checkoutBtn" onclick="checkoutCart()">Checkout</button>
 
