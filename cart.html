@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
+    <title>My Cart</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body onload="loadCart()">
 
-<h2>My Cart</h2>
+<header>
+    <h2>My Cart</h2>
+</header>
 
 <div id="cart"></div>
 
+<!-- CART ACTIONS -->
 <button onclick="clearCart()">Clear Cart</button>
-<button onclick="location.href='payment.html'">Checkout</button>
+<button onclick="checkoutCart()">Checkout</button>
 
 <script src="script.js"></script>
 </body>
