@@ -5,31 +5,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header>
+    <h1>Welcome to Online Book Store</h1>
+    <nav>
+        <a href="catalog.html">Catalog</a>
+        <a href="cart.html">Cart</a>
+        <a href="login.html" id="loginLink">Login</a>
+        <span id="userWelcome"></span>
+    </nav>
+</header>
 
-<h2>Book Store</h2>
-
-<!-- BOOK 1 -->
-<div class="card">
-    <h3>Java Programming</h3>
-    <p>Price: ₹300</p>
-    <button onclick="addToCart('Java Programming', 300)">
-        Add to Cart
-    </button>
-</div>
-
-<!-- BOOK 2 -->
-<div class="card">
-    <h3>Python Basics</h3>
-    <p>Price: ₹250</p>
-    <button onclick="addToCart('Python Basics', 250)">
-        Add to Cart
-    </button>
-</div>
-
-<!-- GO TO CART -->
-<br><br>
-<a href="cart.html">Go to Cart</a>
+<main>
+    <h2>Featured Books</h2>
+    <p>Browse the catalog to see all available books!</p>
+</main>
 
 <script src="script.js"></script>
+<script>
+    // Show logged-in user name
+    let user = getUser();
+    if(user) {
+        document.getElementById('userWelcome').innerHTML = `Hello, ${user}`;
+        document.getElementById('loginLink').style.display = 'none';
+    }
+</script>
 </body>
 </html>
