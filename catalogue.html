@@ -1,21 +1,13 @@
-<html>
-<head>
-<link rel="stylesheet" href="style.css">
-<script>
-let total = 0;
-function add(price) {
-total += price;
-document.getElementById("total").innerHTML = total;
-}
-</script>
-</head>
-<body>
-<h2 align="center">Book Catalogue</h2>
-<table>
-<tr><th>Book</th><th>Price</th><th>Action</th></tr>
-<tr><td>Java</td><td>500</td><td><button onclick="add(500)">Add</button></td></tr>
-<tr><td>Python</td><td>450</td><td><button onclick="add(450)">Add</button></td></tr>
-</table>
-<h3 align="center">Cart Total: ₹<span id="total">0</span></h3>
-</body>
-</html>
+<div class="card">
+<img src="https://covers.openlibrary.org/b/id/11153230-L.jpg">
+<h3>Data Structures</h3>
+<p>₹600</p>
+<button onclick="addToCart('Data Structures',600)">Add</button>
+</div>
+
+<div class="card">
+<img src="https://covers.openlibrary.org/b/id/10430290-L.jpg">
+<h3>Web Development</h3>
+<p>₹550</p>
+<button onclick="addToCart('Web Development',550)">Add</button>
+</div>
