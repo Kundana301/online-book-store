@@ -1,98 +1,35 @@
-body {
-    margin: 0;
-    font-family: Arial;
-    background: #f1f3f6;
-}
+body { font-family: Arial; margin: 0; background: #f5f5f5; }
+header { background: #232f3e; color: white; padding: 15px; }
+nav { background: #ddd; padding: 10px; }
+nav a { margin: 10px; text-decoration: none; }
 
-/* Header */
-.header {
-    background: #131921;
-    color: white;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-.header input {
-    padding: 7px;
-}
-
-/* Navbar */
-.navbar {
-    background: #232f3e;
-    padding: 10px;
-    text-align: center;
-}
-
-.navbar a {
-    color: white;
-    margin: 10px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-/* Products */
-.container {
-    padding: 20px;
-}
-
-.products {
+.grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
     gap: 20px;
+    padding: 20px;
 }
 
 .card {
     background: white;
     padding: 15px;
-    border-radius: 5px;
     text-align: center;
 }
 
 .card img {
-    width: 100%;
+    width: 150px;
     height: 200px;
 }
 
-.card button {
-    background: #ff9f00;
-    border: none;
-    padding: 10px;
-    width: 100%;
-    cursor: pointer;
-}
-
-/* Forms */
 form {
-    background: white;
     width: 300px;
-    margin: 50px auto;
+    margin: 40px auto;
+    background: white;
     padding: 20px;
 }
 
 input, button {
     width: 100%;
-    padding: 8px;
-    margin: 8px 0;
-}
-
-/* Tables */
-table {
-    width: 100%;
-    background: white;
-    border-collapse: collapse;
-}
-
-th, td {
     padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-}
-
-/* Mobile */
-@media(max-width:600px) {
-    .header {
-        flex-direction: column;
-    }
+    margin: 5px 0;
 }
