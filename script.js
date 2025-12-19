@@ -25,8 +25,7 @@ function loadCart() {
     cartBody.innerHTML = "";
 
     if (!user) {
-        cartBody.innerHTML =
-            `<tr><td colspan="4">Please login to view cart.</td></tr>`;
+        cartBody.innerHTML = `<tr><td colspan="4">Please login to view cart.</td></tr>`;
         checkoutBtn.disabled = true;
         totalDiv.innerHTML = "";
         return;
@@ -36,8 +35,7 @@ function loadCart() {
     let total = 0;
 
     if (cart.length === 0) {
-        cartBody.innerHTML =
-            `<tr><td colspan="4">Your cart is empty.</td></tr>`;
+        cartBody.innerHTML = `<tr><td colspan="4">Your cart is empty.</td></tr>`;
         checkoutBtn.disabled = true;
         totalDiv.innerHTML = "";
         return;
@@ -53,7 +51,11 @@ function loadCart() {
         cartBody.innerHTML += `
             <tr>
                 <td>${item.name}</td>
-                <td align="center">${qty}</td>
+                <td align="center">
+                    <button onclick="decreaseQty(${index})">−</button>
+                    ${qty}
+                    <button onclick="increaseQty(${index})">+</button>
+                </td>
                 <td align="center">₹${price}</td>
                 <td align="center">
                     <button onclick="removeItem(${index})">Remove</button>
@@ -65,7 +67,24 @@ function loadCart() {
     totalDiv.innerHTML = `<b>Total Amount: ₹${total}</b>`;
 }
 
-/* ---------------- REMOVE SINGLE ITEM ---------------- */
+/* ---------------- QUANTITY CONTROLS ---------------- */
+function increaseQty(index) {
+    let cart = getCart();
+    cart[index].qty = (cart[index].qty || 1) + 1;
+    saveCart(cart);
+    loadCart();
+}
+
+function decreaseQty(index) {
+    let cart = getCart();
+    if ((cart[index].qty || 1) > 1) {
+        cart[index].qty--;
+    }
+    saveCart(cart);
+    loadCart();
+}
+
+/* ---------------- REMOVE ITEM ---------------- */
 function removeItem(index) {
     let cart = getCart();
     cart.splice(index, 1);
@@ -87,10 +106,8 @@ function clearCart() {
         window.location.href = "login.html";
         return;
     }
-
     localStorage.removeItem("cart_" + user);
     loadCart();
-    alert("Cart cleared successfully!");
 }
 
 /* ---------------- CHECKOUT ---------------- */
@@ -108,18 +125,10 @@ function checkoutCart() {
         return;
     }
 
-    let orders = JSON.parse(localStorage.getItem("orders_" + user)) || [];
-    orders.push({
-        date: new Date().toLocaleString(),
-        items: cart
-    });
-
-    localStorage.setItem("orders_" + user, JSON.stringify(orders));
-    localStorage.removeItem("cart_" + user);
-
-    alert("Order placed successfully!");
+    localStorage.setItem("currentOrder_" + user, JSON.stringify(cart));
     window.location.href = "order-summary.html";
 }
+
 
 
 /* ----------------------- PAYMENT ----------------------- */
