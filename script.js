@@ -3,67 +3,42 @@ function getUser() {
     return localStorage.getItem("loggedUser");
 }
 
-/* ----------------------- CART FUNCTIONS ----------------------- */
-function getCart() {
-    let user = getUser();
-    if (!user) return [];
-    return JSON.parse(localStorage.getItem("cart_" + user)) || [];
-}
-
-function saveCart(cart) {
-    let user = getUser();
-    if (!user) return;
-    localStorage.setItem("cart_" + user, JSON.stringify(cart));
-}
-
-function addToCart(name, price) {
-    let user = getUser();
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
-
-    let cart = getCart();
-    let item = cart.find(i => i.name === name);
-    if (item) item.qty++;
-    else cart.push({ name: name, price: price, qty: 1 });
-
-    saveCart(cart);
-    alert(name + " added to cart");
-}
-
-/* ----------------------- LOAD CART ----------------------- */
+// Load cart when page opens
 function loadCart() {
-    let user = getUser();
-    if (!user) {
-        document.getElementById("cart").innerHTML =
-            "<p>Please login to view cart.</p>";
-        return;
-    }
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let cartDiv = document.getElementById("cart");
 
-    let cart = getCart();
+    cartDiv.innerHTML = "";
 
     if (cart.length === 0) {
-        document.getElementById("cart").innerHTML =
-            "<p>Your cart is empty.</p>";
+        cartDiv.innerHTML = "<p>Your cart is empty.</p>";
         return;
     }
 
-    let out = "<table><tr><th>Book</th><th>Qty</th><th>Price</th></tr>";
-
-    cart.forEach(i => {
-        out += `<tr>
-                    <td>${i.name}</td>
-                    <td>${i.qty}</td>
-                    <td>₹${i.price * i.qty}</td>
-                </tr>`;
+    cart.forEach((item, index) => {
+        cartDiv.innerHTML += `
+            <div class="cart-item">
+                <p><b>${item.name}</b></p>
+                <p>Price: ₹${item.price}</p>
+            </div>
+        `;
     });
-
-    out += "</table>";
-
-    document.getElementById("cart").innerHTML = out;
 }
+
+// Clear cart
+function clearCart() {
+    localStorage.removeItem("cart");   // IMPORTANT
+    document.getElementById("cart").innerHTML =
+        "<p>Your cart is empty.</p>";
+    alert("Cart cleared successfully!");
+}
+
+// Checkout (optional)
+function checkoutCart() {
+    alert("Checkout successful!");
+    clearCart();
+}
+
 
 /* ----------------------- CLEAR CART ----------------------- */
 function clearCart() {
