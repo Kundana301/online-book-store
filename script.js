@@ -14,34 +14,6 @@ function saveCart(cart) {
     let user = getUser();
     localStorage.setItem("cart_" + user, JSON.stringify(cart));
 }
-/* ---------------- ADD TO CART ---------------- */
-function addToCart(name, price) {
-    let user = getUser();
-
-    if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-    }
-
-    let cart = getCart();
-
-    // Check if book already exists
-    let item = cart.find(b => b.name === name);
-
-    if (item) {
-        item.qty += 1;   // increase quantity
-    } else {
-        cart.push({
-            name: name,
-            price: price,
-            qty: 1
-        });
-    }
-
-    saveCart(cart);
-    alert("Book added to cart successfully!");
-}
 
 /* ---------------- LOAD CART ---------------- */
 function loadCart() {
@@ -183,4 +155,32 @@ function searchBooks() {
             ? "block"
             : "none";
     });
+}
+/* ---------------- ADD TO CART ---------------- */
+function addToCart(name, price) {
+    let user = getUser();
+
+    if (!user) {
+        alert("Please login first");
+        window.location.href = "login.html";
+        return;
+    }
+
+    let cart = getCart();
+
+    // Check if book already exists
+    let item = cart.find(b => b.name === name);
+
+    if (item) {
+        item.qty += 1;   // increase quantity
+    } else {
+        cart.push({
+            name: name,
+            price: price,
+            qty: 1
+        });
+    }
+
+    saveCart(cart);
+    alert("Book added to cart successfully!");
 }
