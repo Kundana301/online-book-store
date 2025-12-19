@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Login / Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<header>
+    <h1>Login / Register</h1>
+</header>
 
-<form onsubmit="loginUser(); return false;">
+<div id="loginDiv">
     <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Username"><br>
+    <input type="password" id="loginPass" placeholder="Password"><br>
+    <button onclick="login()">Login</button>
+</div>
 
-    <input id="username" placeholder="Username" required>
-    <input id="password" type="password" placeholder="Password" required>
+<hr>
 
-    <button>Login</button>
-
-    <p>User: user / 1234</p>
-    <p>Admin: admin / admin123</p>
-
-    <!-- ✅ ADD HERE -->
-    <p>
-        New user?
-        <a href="register.html">Register here</a>
-    </p>
-</form>
+<div id="registerDiv">
+    <h2>Register</h2>
+    <input type="text" id="regUser" placeholder="Username"><br>
+    <input type="password" id="regPass" placeholder="Password"><br>
+    <button onclick="register()">Register</button>
+</div>
 
 <script src="script.js"></script>
-</body>
-</html>
