@@ -4,60 +4,28 @@
     <title>Order Summary</title>
     <link rel="stylesheet" href="style.css">
 </head>
+<body>
+<header>
+    <h1>Order Summary</h1>
+    <a href="index.html">Home</a>
+</header>
 
-<body onload="loadOrderSummary()">
+<div id="orderDetails"></div>
 
-<h2>Order Summary</h2>
+<button onclick="makePayment()">Pay Now</button>
 
-<table width="100%" cellspacing="10">
-    <thead>
-        <tr>
-            <th>Book</th>
-            <th>Qty</th>
-            <th>Price</th>
-        </tr>
-    </thead>
-    <tbody id="orderItems"></tbody>
-</table>
-
-<h3 id="orderTotal"></h3>
-
-<button onclick="makePayment()">Proceed to Payment</button>
-
+<script src="script.js"></script>
 <script>
-function getUser() {
-    return localStorage.getItem("loggedUser");
-}
-
-function loadOrderSummary() {
     let user = getUser();
-    let items = JSON.parse(localStorage.getItem("currentOrder_" + user)) || [];
-    let body = document.getElementById("orderItems");
-    let total = 0;
-
-    body.innerHTML = "";
-
-    items.forEach(item => {
-        let price = item.price * item.qty;
-        total += price;
-
-        body.innerHTML += `
-            <tr>
-                <td>${item.name}</td>
-                <td align="center">${item.qty}</td>
-                <td align="center">₹${price}</td>
-            </tr>
-        `;
-    });
-
-    document.getElementById("orderTotal").innerHTML =
-        "<b>Total Amount: ₹" + total + "</b>";
-}
-
-function makePayment() {
-    window.location.href = "payment-success.html";
-}
+    let cart = JSON.parse(localStorage.getItem("currentOrder_" + user)) || [];
+    let orderDiv = document.getElementById("orderDetails");
+    if(cart.length === 0) {
+        orderDiv.innerHTML = "<p>No items in your order.</p>";
+    } else {
+        cart.forEach(item=>{
+            orderDiv.innerHTML += `<p>${item.name} x ${item.qty || 1} - ₹${item.price * (item.qty || 1)}</p>`;
+        });
+    }
 </script>
-
 </body>
 </html>
